@@ -21,18 +21,24 @@ test_mmap: test_mmap.o
 test_write: test_write.o
 	$(CC) $(CFLAGS) -o test_write test_write.o 
 
+# In MacOS the -static parameter will will cause -lcrt.o error
+# so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_read: boost_iostreams_mmap_read.o
 	$(CXX) -o boost_iostreams_mmap_read boost_iostreams_mmap_read.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
 
 boost_iostreams_mmap_read.o: boost_iostreams_mmap_read.cpp
 	$(CXX) -c boost_iostreams_mmap_read.cpp -I $(HEAD_PATH)
 
+# In MacOS the -static parameter will will cause -lcrt.o error
+# so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_read2: boost_iostreams_mmap_read2.o
 	$(CXX) -o boost_iostreams_mmap_read2 boost_iostreams_mmap_read2.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
 
 boost_iostreams_mmap_read2.o: boost_iostreams_mmap_read2.cpp
 	$(CXX) -c boost_iostreams_mmap_read2.cpp -I $(HEAD_PATH)
 
+# In MacOS the -static parameter will will cause -lcrt.o error
+# so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_write: boost_iostreams_mmap_write.o
 	$(CXX) -o boost_iostreams_mmap_write boost_iostreams_mmap_write.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
 
