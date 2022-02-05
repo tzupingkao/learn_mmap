@@ -2,8 +2,17 @@ CFLAGS=-g
 CC=gcc
 CXX=g++
 
-LIB_PATH=/home/tzuping/install/boost/lib
-HEAD_PATH=/home/tzuping/install/boost/include
+ifeq ($(shell uname -s), Linux)
+	DIR_NAME=/home
+	LINK_TYPE="-static"
+else ifeq ($(shell uname -s), Darwin)
+	DIR_NAME=/Users
+	LINK_TYPE=""
+endif
+
+
+LIB_PATH=$(DIR_NAME)/tzuping/install/boost/lib
+HEAD_PATH=$(DIR_NAME)/tzuping/install/boost/include
 
 PROG=test_mmap test_write boost_iostreams_mmap_read boost_iostreams_mmap_read2 boost_iostreams_mmap_write
 
@@ -16,6 +25,8 @@ install: $(PROG)
 LIBS= -lboost_iostreams
 
 test_mmap: test_mmap.o
+	@echo $(shell uname -s)
+	@echo $(DIR_NAME)
 	$(CC) $(CFLAGS) -o test_mmap test_mmap.o
 
 test_write: test_write.o
@@ -24,7 +35,7 @@ test_write: test_write.o
 # In MacOS the -static parameter will will cause -lcrt.o error
 # so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_read: boost_iostreams_mmap_read.o
-	$(CXX) -o boost_iostreams_mmap_read boost_iostreams_mmap_read.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
+	$(CXX) -o boost_iostreams_mmap_read boost_iostreams_mmap_read.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) $(LINK_TYPE)
 
 boost_iostreams_mmap_read.o: boost_iostreams_mmap_read.cpp
 	$(CXX) -c boost_iostreams_mmap_read.cpp -I $(HEAD_PATH)
@@ -32,7 +43,7 @@ boost_iostreams_mmap_read.o: boost_iostreams_mmap_read.cpp
 # In MacOS the -static parameter will will cause -lcrt.o error
 # so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_read2: boost_iostreams_mmap_read2.o
-	$(CXX) -o boost_iostreams_mmap_read2 boost_iostreams_mmap_read2.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
+	$(CXX) -o boost_iostreams_mmap_read2 boost_iostreams_mmap_read2.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) $(LINK_TYPE)
 
 boost_iostreams_mmap_read2.o: boost_iostreams_mmap_read2.cpp
 	$(CXX) -c boost_iostreams_mmap_read2.cpp -I $(HEAD_PATH)
@@ -40,7 +51,7 @@ boost_iostreams_mmap_read2.o: boost_iostreams_mmap_read2.cpp
 # In MacOS the -static parameter will will cause -lcrt.o error
 # so the program uses dynamic link, and set DYLD_FALLBACK_LIBRARY_PATH assign path
 boost_iostreams_mmap_write: boost_iostreams_mmap_write.o
-	$(CXX) -o boost_iostreams_mmap_write boost_iostreams_mmap_write.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) -static
+	$(CXX) -o boost_iostreams_mmap_write boost_iostreams_mmap_write.o -L $(LIB_PATH) -I $(HEAD_PATH) $(LIBS) $(LINK_TYPE)
 
 boost_iostreams_mmap_write.o: boost_iostreams_mmap_write.cpp
 	$(CXX) -c boost_iostreams_mmap_write.cpp -I $(HEAD_PATH)
